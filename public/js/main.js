@@ -1,7 +1,7 @@
 'use strict';
 /* global $ tripModule */
 
-$(tripModule.load);
+
 
 var $optionsPanel = $('#options-panel');
 var $hotelSelect = $optionsPanel.find('#hotel-choices');
@@ -15,14 +15,26 @@ function makeOption (databaseAttraction) {
   this.append($option); // add the option to the specific select
 }
 
-$.get('/api/hotels', (hotels) => {
-  hotels.forEach(makeOption, $hotelSelect);
-})
 
-$.get('/api/restaurants', (restaurants) => {
-  restaurants.forEach(makeOption, $restaurantSelect);
-})
 
-$.get('/api/activities', (activities) => {
-  activities.forEach(makeOption, $activitySelect);
+Promise.all([
+	$.get('/api/hotels'),
+
+	$.get('/api/restaurants'),
+
+	$.get('/api/activities'),
+
+	$.get('/api/days')
+
+	])
+.then( (results) => {
+	results[0].forEach(makeOption, $hotelSelect);
+	results[1].forEach(makeOption, $restaurantSelect);
+	results[2].forEach(makeOption, $activitySelect);
+	results[3].forEach(tripModule.addDatabaseDay);
+	attractionsModule.createEnhanced(results);
+	$(tripModule.load);
 })
+.catch((err) => {
+	throw new Error(err);
+});

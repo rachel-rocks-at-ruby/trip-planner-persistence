@@ -11,11 +11,12 @@ var attractionsModule = (function () {
 
   // application state
 
-  var enhanced = {
-    hotels: hotels.map(attractionModule.create),
-    restaurants: restaurants.map(attractionModule.create),
-    activities: activities.map(attractionModule.create),
-  }
+  // var enhanced = {
+  //   hotels: hotels.map(attractionModule.create),
+  //   restaurants: restaurants.map(attractionModule.create),
+  //   activities: activities.map(attractionModule.create),
+  // }
+  var enhanced;
 
   // private helper methods (only available inside the module)
 
@@ -42,6 +43,15 @@ var attractionsModule = (function () {
       var found = publicAPI.getByTypeAndId(type, id);
       if (found) return found;
       throw Error('enhanced version not found', databaseAttraction);
+    },
+
+    createEnhanced: function(attractions){
+      enhanced = {
+        hotels: attractions[0].map(attractionModule.create),
+        restaurants: attractions[1].map(attractionModule.create),
+        activities: attractions[2].map(attractionModule.create),
+      }
+
     }
 
   };

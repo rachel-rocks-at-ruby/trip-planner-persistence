@@ -53,6 +53,13 @@ var tripModule = (function () {
       currentDay = newDay;
     }
     switchTo(newDay);
+    $.ajax({
+      method: 'post',
+      url: '/api/days/',
+      data: {
+        number: days.length
+      }
+    })
   }
 
   function deleteCurrentDay () {
@@ -68,6 +75,11 @@ var tripModule = (function () {
     });
     switchTo(newCurrent);
     previousDay.hideButton();
+    $.ajax({
+      method: 'delete',
+      url: '/api/days/' + previousDay.number.toString()
+
+    });
   }
 
   // globally accessible module methods
@@ -75,17 +87,33 @@ var tripModule = (function () {
   var publicAPI = {
 
     load: function () {
-      $(addDay);
+      if (days.length === 0){
+        $(addDay);
+        
+      } else {
+        switchTo(days[0]);
+      }
     },
 
     switchTo: switchTo,
 
     addToCurrent: function (attraction) {
       currentDay.addAttraction(attraction);
+      console.log(attraction);
+      $.ajax({
+        method: 'put',
+        url: '/api/days/' + currentDay.number.toString() + '/' + attraction.type.toString(),
+        data: { name: attraction.name }
+      })
     },
 
     removeFromCurrent: function (attraction) {
       currentDay.removeAttraction(attraction);
+    },
+
+    addDatabaseDay: function (day) {
+      let newDay = dayModule.create(day)
+      days.push(newDay);
     }
 
   };

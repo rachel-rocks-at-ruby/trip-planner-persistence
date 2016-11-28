@@ -8,6 +8,7 @@ var db = require('./models');
 var hotelRouter = require('./routes/api/hotels');
 var restaurantRouter = require('./routes/api/restaurants');
 var activityRouter = require('./routes/api/activities');
+var dayRouter = require('./routes/api/days');
 
 var app = express();
 
@@ -33,6 +34,7 @@ app.use(require('./routes'));
 app.use('/api/hotels', hotelRouter);
 app.use('/api/restaurants', restaurantRouter);
 app.use('/api/activities', activityRouter);
+app.use('/api/days', dayRouter);
 
 // failed to catch req above means 404, forward to error handler
 app.use(function (req, res, next) {
