@@ -9,25 +9,7 @@
  * then tells the trip module to add the attraction.
  */
 
-$(function(){
-
-  // jQuery selects
-  var $optionsPanel = $('#options-panel');
-  var $hotelSelect = $optionsPanel.find('#hotel-choices');
-  var $restaurantSelect = $optionsPanel.find('#restaurant-choices');
-  var $activitySelect = $optionsPanel.find('#activity-choices');
-
-  // make all the option tags (second arg of `forEach` is a `this` binding)
-  hotels.forEach(makeOption, $hotelSelect);
-  restaurants.forEach(makeOption, $restaurantSelect);
-  activities.forEach(makeOption, $activitySelect);
-
-  function makeOption (databaseAttraction) {
-    var $option = $('<option></option>') // makes a new option tag
-      .text(databaseAttraction.name)
-      .val(databaseAttraction.id);
-    this.append($option); // add the option to the specific select
-  }
+$(function () {
 
   // what to do when the `+` button next to a `select` is clicked
   $optionsPanel.on('click', 'button[data-action="add"]', function () {
